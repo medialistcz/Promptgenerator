@@ -16,7 +16,38 @@
   <!-- Card -->
   <div class="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8 space-y-6">
     <h1 class="text-4xl font-extrabold text-orange-600" style="font-family:'Poppins', sans-serif">🪄 PR Prompt Generátor</h1>
+<!-- Manual toggle -->
+<details class="bg-orange-50/50 p-4 rounded-lg shadow-inner mb-4">
+  <summary class="cursor-pointer font-medium text-orange-600">
+    Jak generátor používat? (Rozklikni)
+  </summary>
 
+  <div class="mt-4 space-y-2 text-sm leading-relaxed">
+    <p>
+      Vyplň <strong>Zadání</strong> (povinné) a libovolná další pole.
+      Hodnoty <em>„Neuvedeno“</em> znamenají, že se do promptu nezahrnou.
+      Klikni <strong>Vygenerovat prompt</strong> → text se objeví níže,
+      tlačítkem <em>Kopírovat</em> ho dostaneš do schránky.
+    </p>
+
+    <ul class="list-disc list-inside space-y-1">
+      <li><strong>Zadání</strong> – hlavní instrukce, co má výstup obsahovat.</li>
+      <li><strong>Kontext</strong> – doplňkové podklady (citace, data, pozadí).</li>
+      <li><strong>Tón</strong> – styl vyjadřování (formální, hravý…).</li>
+      <li><strong>Formát</strong> – typ výstupu (tisková zpráva, post…).</li>
+      <li><strong>Audience</strong> – pro koho text je.</li>
+      <li><strong>Kanál</strong> – kde se bude publikovat.</li>
+      <li><strong>Cíl</strong> – komunikační záměr.</li>
+      <li><strong>Rozsah</strong> – délka textu.</li>
+      <li><strong>CTA</strong> – výzva k akci.</li>
+      <li><strong>Jazyk &amp; Region</strong> – lokalizace.</li>
+      <li><strong>Klíčová slova</strong> – povinné termíny.</li>
+      <li><strong>Nezmiňovat</strong> – zakázané fráze.</li>
+      <li><strong>Formát výstupu</strong> – Plain text / Markdown / HTML.</li>
+      <li><strong>Deadline / Embargo</strong> – datum zveřejnění či interní termín.</li>
+    </ul>
+  </div>
+</details>
     <!-- Form -->
     <form id="promptForm" class="space-y-6">
       <!-- Zadání -->
