@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>PR Prompt Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 flex justify-center p-6">
+  <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-6 space-y-6">
+    <h1 class="text-3xl font-bold">🪄 PR Prompt Generator</h1>
+
+    <!-- Form -->
+    <form id="promptForm" class="space-y-4">
+      <div>
+        <label class="block font-medium mb-1" for="mainText">Zadání *</label>
+        <textarea id="mainText" name="mainText" required rows="4" class="w-full p-2 border rounded"></textarea>
+      </div>
+
+      <!-- Selects will be injected here -->
+      <div class="grid md:grid-cols-2 gap-4"></div>
+
+      <button type="submit" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Vygenerovat prompt</button>
+    </form>
+
+    <!-- Output -->
+    <div id="outputSection" class="hidden">
+      <label class="block font-medium mb-1">Hotový prompt</label>
+      <textarea id="output" rows="6" readonly class="w-full p-2 border rounded"></textarea>
+      <button id="copyBtn" class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Kopírovat</button>
+    </div>
+  </div>
+
+<script>
+// Konfigurace selectů
+const selectsConfig = [
+  { id: 'style',    label: 'Tón',      options: ["Formální","Přátelský","Autoritativní","Hravý","Inspirativní","Technický","Neutrální","Krizový","Humorný","Uklidňující"] },
+  { id: 'format',   label: 'Formát',   options: ["Tisková zpráva","Media Alert","Blogový článek","Komentář / Opinion Piece","Interview Pitch","Q&A","Post na sociální sítě","Influencer Brief","Projev / Speech","Video Script","Podcast Outline","Fact Sheet","FAQ","Backgrounder","E‑mail Pitch","White Paper"] },
+  { id: 'audience', label: 'Audience', options: ["Novináři","Trade média","Spotřebitelé","B2B partneři","Investoři","Zaměstnanci","Influenceři","Regulátoři / Government","Analytici"] },
+  { id: 'channel',  label: 'Kanál',    options: ["E‑mail","Newswire","LinkedIn","Facebook","Instagram","X/Twitter","TikTok","YouTube","Blog","Podcast","Konference / Event","Web"] },
+  { id: 'goal',     label: 'Cíl',      options: ["Povědomí (Awareness)","Angažovanost (Engagement)","Lead Generation","Konverze","Reputační management","Krizová komunikace","Thought Leadership","Propagace eventu","Employer Branding"] },
+  { id: 'cta',      label: 'CTA',      options: ["Přečtěte si více","Registrovat se","Kontaktujte nás","Stáhnout","Sdílet","Sledovat","Odpovědět","Domluvit rozhovor","Navštívit stánek"] },
+  { id: 'language', label: 'Jazyk',    options: ["Čeština","English","Slovenčina","Deutsch","Polski","Français","Español","Italiano"] },
+  { id: 'region',   label: 'Region',   options: ["Česko","Slovensko","Střední Evropa","DACH","EMEA","Globální","Online Only"] }
+];
+
+// Dynamicky vytvoříme selecty
+const selectsContainer = document.querySelector('form .grid');
+selectsConfig.forEach(cfg => {
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <label class="block font-medium mb-1" for="${cfg.id}">${cfg.label}</label>
+    <select id="${cfg.id}" name="${cfg.id}" class="w-full p-2 border rounded">
+      ${cfg.options.map(o => `<option value="${o}">${o}</option>`).join('')}
+    </select>
+  `;
+  selectsContainer.appendChild(div);
+});
+
+const form = document.getElementById('promptForm');
+const outputSection = document.getElementById('outputSection');
+const output = document.getElementById('output');
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(form).entries());
+  const prompt = `Vytvoř ${data.format} v tónu ${data.style} pro ${data.audience}. Kanál: ${data.channel}. Cíl: ${data.goal}. CTA: ${data.cta}. Jazyk: ${data.language}, region: ${data.region}. Zadání: ${data.mainText}`;
+  output.value = prompt;
+  outputSection.classList.remove('hidden');
+});
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+  output.select();
+  document.execCommand('copy');
+  alert('Prompt zkopírován do schránky!');
+});
+</script>
+</body>
+</html>
