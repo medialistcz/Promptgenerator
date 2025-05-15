@@ -52,6 +52,14 @@
     
     <!-- Form -->
     <form id="promptForm" class="space-y-6">
+
+
+  <!-- Nový kontejner pro tlačítka nad polem Zadání -->
+  <div class="flex flex-wrap gap-3 mb-6">
+    <button id="resetFormBtn" type="button" class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">Nový formulář</button>
+    <button id="importTemplatesBtn" type="button" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Importovat šablony</button>
+  </div>
+
       <!-- Zadání -->
       <div>
         <label class="block font-medium mb-1" for="mainText">Zadání *</label>
@@ -283,8 +291,15 @@ document.getElementById('copyBtn').addEventListener('click', async () => {
 
 // Otevření v ChatGPT
 document.getElementById('openGptBtn').addEventListener('click', () => {
-  window.open(`https://chat.openai.com/chat?prompt=${encodeURIComponent(output.value)}`, '_blank');
+  const maxLength = 2000; // omezení délky promptu pro URL
+  let promptText = output.value;
+  if (promptText.length > maxLength) {
+    promptText = promptText.substring(0, maxLength) + '...';
+  }
+  const url = `https://chat.openai.com/chat?prompt=${encodeURIComponent(promptText)}`;
+  window.open(url, '_blank');
 });
+
 
 // Ukládání šablon
 document.getElementById('saveTemplateBtn').addEventListener('click', () => {
@@ -386,13 +401,6 @@ exportBtn.className = 'px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amb
 exportBtn.textContent = 'Exportovat šablony';
 templateButtonsContainer.appendChild(exportBtn);
 
-const importBtn = document.createElement('button');
-importBtn.type = 'button';
-importBtn.id = 'importTemplatesBtn';
-importBtn.className = 'px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition';
-importBtn.textContent = 'Importovat šablony';
-templateButtonsContainer.appendChild(importBtn);
-
 // Export šablon
 document.getElementById('exportTemplatesBtn').addEventListener('click', () => {
   const templates = localStorage.getItem('prTemplates') || '{}';
@@ -486,18 +494,14 @@ window.addEventListener('load', () => {
   }
 });
 
-// Tlačítko pro nový prázdný formulář
-const resetBtn = document.createElement('button');
-resetBtn.type = 'button';
-resetBtn.id = 'resetFormBtn';
-resetBtn.className = 'px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition';
-resetBtn.textContent = 'Nový formulář';
-templateButtonsContainer.appendChild(resetBtn);
+
 
 document.getElementById('resetFormBtn').addEventListener('click', () => {
   if (confirm('Opravdu chcete vymazat obsah formuláře a vytvořit nový?')) {
     form.reset();
-    showFeedback('Formulář byl vymazán', 'success');
+    output.value = '';
+    outputSection.classList.add('hidden');
+    showFeedback('Formulář a prompt byly vymazány', 'success');
   }
 });
 
